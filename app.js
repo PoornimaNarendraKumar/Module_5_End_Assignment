@@ -10,12 +10,28 @@ app.get('/', (req, res) => {
     res.send("Hello World")
 })
 
+// async function main() {
+//     await mongoose.connect(
+//         'mongodb+srv://poornimanarendransn:lM5V5CwvOHmVknzW@cluster0.gelcp.mongodb.net/TravelDb?retryWrites=true&w=majority&appName=Cluster0'
+//     );
+//     console.log('Connected to MongoDB!');
+// }
 async function main() {
-    await mongoose.connect(
-        'mongodb+srv://poornimanarendransn:lM5V5CwvOHmVknzW@cluster0.gelcp.mongodb.net/TravelDb?retryWrites=true&w=majority&appName=Cluster0'
-    );
-    console.log('Connected to MongoDB!');
+  try {
+    const uri = process.env.MONGODB_URI;
+    console.log("📡 Connecting to MongoDB...");
+
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("✅ Connected to MongoDB!");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+  }
 }
+
 main()
     .then(() => console.log("DB Connected"))
     .catch(err => console.log(err))
